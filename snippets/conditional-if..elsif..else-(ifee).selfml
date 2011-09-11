@@ -1,0 +1,15 @@
+(name [Conditional if..elsif..else])
+
+(trigger
+    (tab ifee))
+
+(only-in source.perl)
+
+(snippet [if (%{1}) {
+	%{2="# body..."}
+} elsif (%{3}) {
+	%{4="# elsif..."}
+} else {
+	%{5="# else..."}
+}
+])

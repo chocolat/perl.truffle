@@ -1,0 +1,14 @@
+(trigger
+    (key [[ctrl][cmd]P]))
+
+(name [Send to Affrus])
+
+(only-in source.perl)
+
+(input nothing)
+
+(output nothing)
+
+(save file)
+
+(script [open -a Affrus "$TM_FILEPATH"])

@@ -1,0 +1,18 @@
+(detector
+    (extension pl)
+    (extension pm)
+    (extension pod)
+    (extension t)
+    (extension PL))
+
+(detector
+    (content-matches [^#!.*\bperl\b]))
+
+(folding
+    (start `(/\*|(\{|\[|\()\s*$)`)
+    (stop `(\*/|^\s*(\}|\]|\)))`))
+
+(shell-variables
+    (TM_COMMENT_START [# ]))
+
+(comment.line [# ])

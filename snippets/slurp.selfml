@@ -1,0 +1,10 @@
+(name [Read File])
+
+(trigger
+    (tab slurp))
+
+(only-in source.perl)
+
+(snippet [my $%{1="var"};
+{ local $/ = undef; local *FILE; open FILE, "<%{2="file"}"; $%{1} = <FILE>; close FILE }
+])

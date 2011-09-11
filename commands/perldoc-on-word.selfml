@@ -1,0 +1,21 @@
+(trigger
+    (key [[ctrl]H]))
+
+(name [Documentation for Word / Selection])
+
+(only-in source.perl)
+
+(input selection word)
+
+(output html)
+
+(save nothing)
+
+(script [word=${TM_SELECTED_TEXT:-$TM_CURRENT_WORD}
+(perldoc -u "$word" 2>/dev/null || perldoc -u -f "$word" 2>/dev/null) | pod2html --q --title "Perl Documentation - $word" 2>/dev/null | sed -E 's|<a href="#(item_)?([^"]+)">|<a href="http://perldoc.perl.org/search.html?q=\2">|g'
+if [[ -e "${TM_DIRECTORY}/pod2htmd.tmp" ]]
+  then unlink "${TM_DIRECTORY}/pod2htmd.tmp"
+fi
+if [[ -e "${TM_DIRECTORY}/pod2htmi.tmp" ]]
+  then unlink "${TM_DIRECTORY}/pod2htmi.tmp"
+fi])

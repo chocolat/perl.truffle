@@ -1,0 +1,17 @@
+(trigger
+    (key [[ctrl][shift]H]))
+
+(name Tidy)
+
+(only-in source.perl)
+
+(input selection)
+
+(output replace-selected)
+
+(save nothing)
+
+(script [require_cmd perltidy 'Perltidy is available <a href="javascript:TextMate.system(&quot;open http://perltidy.sourceforge.net/&quot;, null)">from here</a>.'
+
+perltidy -st -q
+])

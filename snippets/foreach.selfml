@@ -1,0 +1,11 @@
+(name Loop)
+
+(trigger
+    (tab fore))
+
+(only-in source.perl)
+
+(snippet [foreach %{1="my $%{2="x"}"} (@%{3="array"}) {
+	%{4="# body..."}
+}
+])

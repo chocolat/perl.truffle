@@ -1,0 +1,9 @@
+(name [Loop One-line])
+
+(trigger
+    (tab xfore))
+
+(only-in source.perl)
+
+(snippet [%{1="expression"} foreach @%{2="array"};
+])

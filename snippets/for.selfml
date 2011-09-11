@@ -1,0 +1,11 @@
+(name Loop)
+
+(trigger
+    (tab for))
+
+(only-in source.perl)
+
+(snippet [for (my $%{1="var"} = 0; $%{1} < %{2="expression"}; $%{1}++) {
+	%{3="# body..."}
+}
+])

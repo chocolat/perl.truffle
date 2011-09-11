@@ -1,0 +1,11 @@
+(name Loop)
+
+(trigger
+    (tab while))
+
+(only-in source.perl)
+
+(snippet [while (%{1}) {
+	%{2="# body..."}
+}
+])

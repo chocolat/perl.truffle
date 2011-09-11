@@ -1,0 +1,11 @@
+(name Function)
+
+(trigger
+    (tab sub))
+
+(only-in source.perl)
+
+(snippet [sub %{1="function_name"} {
+	%{2="# body..."}
+}
+])

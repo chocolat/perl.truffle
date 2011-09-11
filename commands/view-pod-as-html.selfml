@@ -1,0 +1,14 @@
+(trigger
+    (key [[ctrl][cmd]P]))
+
+(name [View POD as HTML])
+
+(only-in source.perl)
+
+(input document)
+
+(output html)
+
+(save nothing)
+
+(script [pod2html 2>/dev/null])

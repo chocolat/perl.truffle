@@ -1,0 +1,9 @@
+(name [Conditional One-line])
+
+(trigger
+    (tab xunless))
+
+(only-in source.perl)
+
+(snippet [%{1="expression"} unless %{2="condition"};
+])

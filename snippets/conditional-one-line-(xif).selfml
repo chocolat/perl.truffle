@@ -1,0 +1,9 @@
+(name [Conditional One-line])
+
+(trigger
+    (tab xif))
+
+(only-in source.perl)
+
+(snippet [%{1="expression"} if %{2="condition"};
+])

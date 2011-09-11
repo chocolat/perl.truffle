@@ -1,0 +1,11 @@
+(name Conditional)
+
+(trigger
+    (tab if))
+
+(only-in source.perl)
+
+(snippet [if (%{1}) {
+	%{2="# body..."}
+}
+])

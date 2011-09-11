@@ -1,0 +1,1116 @@
+(root source.perl
+    (include @line_comment)
+    (zone comment.block.documentation.perl
+        (start
+            (regex ^=
+                (0 punctuation.definition.comment.perl)))
+        (end
+            (regex ^=cut
+                (0 punctuation.definition.comment.perl))))
+    (include @variable)
+    (zone
+        (start
+            (regex [\b(?=qr\s*[^\s\w])]))
+        (end
+            (regex [((([egimosx]*)))(?=(\s+\S|\s*[;\,\#\{\}\)]|$))]
+                (3 keyword.control.regexp-option.perl)
+                (1 string.regexp.compile.perl)
+                (2 punctuation.definition.string.perl)))
+        (subzones
+            (zone string.regexp.compile.nested_braces.perl
+                (start
+                    (regex [(qr)\s*\{]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [\}]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_braces_interpolated)))
+            (zone string.regexp.compile.nested_brackets.perl
+                (start
+                    (regex `(qr)\s*\[`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex `\]`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_brackets_interpolated)))
+            (zone string.regexp.compile.nested_ltgt.perl
+                (start
+                    (regex [(qr)\s*<]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex >
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_ltgt_interpolated)))
+            (zone string.regexp.compile.nested_parens.perl
+                (start
+                    (regex [(qr)\s*\(]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [\)]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_parens_interpolated)))
+            (zone string.regexp.compile.single-quote.perl
+                (start
+                    (regex [(qr)\s*\']
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex \'
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)))
+            (zone string.regexp.compile.simple-delimiter.perl
+                (start
+                    (regex `(qr)\s*([^\s\w\'\{\[\(\<])`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex \2
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (zone keyword.control.anchor.perl
+                        (match
+                            (regex `\$(?=[^\s\w\'\{\[\(\<])`)))
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_parens_interpolated)))))
+    (zone
+        (start
+            (regex `\b(?=(?<!\&)(s)(\s+\S|\s*[;\,\#\{\}\(\)\[<]|$))`))
+        (end
+            (regex `((([egimosx]*)))(?=(\s+\S|\s*[;\,\#\{\}\)\]>]|$))`
+                (3 keyword.control.regexp-option.perl)
+                (1 string.regexp.replace.perl)
+                (2 punctuation.definition.string.perl)))
+        (subzones
+            (zone string.regexp.nested_braces.perl
+                (start
+                    (regex [(s)\s*\{]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [\}]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @nested_braces)))
+            (zone string.regexp.nested_brackets.perl
+                (start
+                    (regex `(s)\s*\[`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex `\]`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @nested_brackets)))
+            (zone string.regexp.nested_ltgt.perl
+                (start
+                    (regex [(s)\s*<]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex >
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @nested_ltgt)))
+            (zone string.regexp.nested_parens.perl
+                (start
+                    (regex [(s)\s*\(]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [\)]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @nested_parens)))
+            (zone string.regexp.format.nested_braces.perl
+                (start
+                    (regex [\{]
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex [\}]
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_braces_interpolated)))
+            (zone string.regexp.format.nested_brackets.perl
+                (start
+                    (regex `\[`
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex `\]`
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_brackets_interpolated)))
+            (zone string.regexp.format.nested_ltgt.perl
+                (start
+                    (regex <
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex >
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_ltgt_interpolated)))
+            (zone string.regexp.format.nested_parens.perl
+                (start
+                    (regex [\(]
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex [\)]
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)
+                    (include @nested_parens_interpolated)))
+            (zone string.regexp.format.single_quote.perl
+                (start
+                    (regex '
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex '
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (zone constant.character.escape.perl
+                        (match
+                            (regex [\\['\\]])))))
+            (zone string.regexp.format.simple_delimiter.perl
+                (start
+                    (regex `([^\s\w\[({<;])`
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex \1
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)))
+            (zone
+                (match
+                    (regex \s+)))))
+    (zone
+        (start
+            (regex `\b(?=s([^\s\w\[({<]).*\1([egimos]*)([\}\)\;\,]|\s+))`))
+        (end
+            (regex [((([egimos]*)))(?=([\}\)\;\,]|\s+|$))]
+                (3 keyword.control.regexp-option.perl)
+                (1 string.regexp.replace.perl)
+                (2 punctuation.definition.string.perl)))
+        (subzones
+            (zone string.regexp.replaceXXX.simple_delimiter.perl
+                (start
+                    (regex `(s\s*)([^\s\w\[({<])`
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [(?=\2)]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)))
+            (zone string.regexp.replaceXXX.format.single_quote.perl
+                (start
+                    (regex '
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex '
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (zone constant.character.escape.perl.perl
+                        (match
+                            (regex [\\['\\]])))))
+            (zone string.regexp.replaceXXX.format.simple_delimiter.perl
+                (start
+                    (regex `([^\s\w\[({<])`
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex \1
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)))))
+    (zone
+        (start
+            (regex `\b(?=(?<!\\)s\s*([^\s\w\[({<]))`))
+        (end
+            (regex [\2((([egimos]*x[egimos]*)))\b]
+                (3 keyword.control.regexp-option.perl)
+                (1 string.regexp.replace.perl)
+                (2 punctuation.definition.string.perl)))
+        (subzones
+            (zone string.regexp.replace.extended.simple_delimiter.perl
+                (start
+                    (regex [(s)\s*(.)]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (end
+                    (regex [(?=\2)]
+                        (0 punctuation.definition.string.perl)
+                        (1 support.function.perl)))
+                (subzones
+                    (include @escaped_char)))
+            (zone string.regexp.replace.extended.simple_delimiter.perl
+                (start
+                    (regex '
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex ['(?=[egimos]*x[egimos]*)\b]
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)))
+            (zone string.regexp.replace.extended.simple_delimiter.perl
+                (start
+                    (regex [(.)]
+                        (0 punctuation.definition.string.perl)))
+                (end
+                    (regex [\1(?=[egimos]*x[egimos]*)\b]
+                        (0 punctuation.definition.string.perl)))
+                (subzones
+                    (include @escaped_char)
+                    (include @variable)))))
+    (zone constant.other.key.perl
+        (match
+            (regex [\b\w+\s*(?==>)])))
+    (zone constant.other.bareword.perl
+        (match
+            (regex [(?<={)\s*\w+\s*(?=})])))
+    (zone string.regexp.find.perl
+        (match
+            (regex [(?<!\\)((~\s*)?\/)(\S.*?)(?<!\\)(\\{2})*(\/)]
+                (5 punctuation.definition.string.perl)
+                (1 punctuation.definition.string.perl))))
+    (zone string.regexp.find.extended.perl
+        (start
+            (regex [(?<!\\)(\~\s*\/)]
+                (0 punctuation.definition.string.perl)))
+        (end
+            (regex [\/([cgimos]*x[cgimos]*)\b]
+                (1 keyword.control.regexp-option.perl)
+                (0 punctuation.definition.string.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone meta.class.perl
+        (match
+            (regex [^\s*(package)\s+(\S+)\s*((#).*)?$\n?]
+                (3 comment.line.number-sign.perl)
+                (4 punctuation.definition.comment.perl)
+                (1 keyword.control.perl)
+                (2 entity.name.type.class.perl))))
+    (zone meta.function.perl
+        (match
+            (regex [^\s*(sub)\s+([-a-zA-Z0-9_]+)\s*(\([\$\@\*;]*\))?]
+                (3 storage.type.method.perl)
+                (1 storage.type.sub.perl)
+                (2 entity.name.function.perl))))
+    (zone meta.function.perl
+        (match
+            (regex [^\s*(BEGIN|END|DESTROY)\b]
+                (3 variable.parameter.function.perl)
+                (1 entity.name.function.perl)
+                (2 punctuation.definition.parameters.perl))))
+    (zone meta.leading-tabs
+        (start
+            (regex [^(?=(\t| {4}))]))
+        (end
+            (regex [(?=[^\t\s])]))
+        (subzones
+            (zone
+                (match
+                    (regex [(\t| {4})(\t| {4})?]
+                        (1 meta.odd-tab)
+                        (2 meta.even-tab))))))
+    (zone string.regexp.find-m.perl
+        (match
+            (regex `\b(m)\s*(?<!\\)([^\[\{\(A-Za-z0-9\s])(.*?)(?<!\\)(\\{2})*(\2)`
+                (5 punctuation.definition.string.perl)
+                (1 support.function.perl)
+                (2 punctuation.definition.string.perl))))
+    (zone string.regexp.find-m-paren.perl
+        (start
+            (regex [\b(m)\s*(?<!\\)\(]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\)]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_parens_interpolated)
+            (include @variable)))
+    (zone string.regexp.find-m-brace.perl
+        (start
+            (regex [\b(m)\s*(?<!\\)\{]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\}]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_braces_interpolated)
+            (include @variable)))
+    (zone string.regexp.find-m-bracket.perl
+        (start
+            (regex `\b(m)\s*(?<!\\)\[`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex `\]`
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_brackets_interpolated)
+            (include @variable)))
+    (zone string.regexp.find-m-ltgt.perl
+        (start
+            (regex [\b(m)\s*(?<!\\)\<]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \>
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_ltgt_interpolated)
+            (include @variable)))
+    (zone string.regexp.replace.perl
+        (match
+            (regex [\b(s|tr|y)\s*([^A-Za-z0-9\s])(.*?)(?<!\\)(\\{2})*(\2)(.*?)(?<!\\)(\\{2})*(\2)]
+                (8 punctuation.definition.string.perl)
+                (5 punctuation.definition.string.perl)
+                (1 support.function.perl)
+                (2 punctuation.definition.string.perl))))
+    (zone constant.language.perl
+        (match
+            (list __FILE__ __LINE__ __PACKAGE__)
+            (boundary.both)))
+    (zone keyword.control.perl
+        (match
+            (regex [(?<!->)\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|package|require|use|eval)\b])))
+    (zone storage.modifier.perl
+        (match
+            (list my our local)
+            (boundary.both)))
+    (zone keyword.operator.filetest.perl
+        (match
+            (regex [(?<!\w)\-[rwx0RWXOezsfdlpSbctugkTBMAC]\b])))
+    (zone keyword.operator.logical.perl
+        (match
+            (list and or xor as)
+            (boundary.both)))
+    (zone keyword.operator.comparison.perl
+        (match
+            (list <=> [ =>] ->)))
+    (zone
+        (inner-identifier text.html.embedded.perl)
+        (start
+            (regex [((<<) *"HTML").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^HTML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include text.html.basic)))
+    (zone
+        (inner-identifier text.xml.embedded.perl)
+        (start
+            (regex [((<<) *"XML").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^XML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include text.xml)))
+    (zone
+        (inner-identifier text.css.embedded.perl)
+        (start
+            (regex [((<<) *"CSS").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^CSS$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.css)))
+    (zone
+        (inner-identifier text.js.embedded.perl)
+        (start
+            (regex [((<<) *"JAVASCRIPT").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^JAVASCRIPT$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.js)))
+    (zone
+        (inner-identifier source.sql.embedded.perl)
+        (start
+            (regex [((<<) *"SQL").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^SQL$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.sql)))
+    (zone
+        (inner-identifier text.postscript.embedded.perl)
+        (start
+            (regex [((<<) *"POSTSCRIPT").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^POSTSCRIPT$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.postscript)))
+    (zone
+        (inner-identifier string.unquoted.heredoc.doublequote.perl)
+        (start
+            (regex [((<<) *"([^"]*)").*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^\3$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.doublequote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone
+        (inner-identifier text.html.embedded.perl)
+        (start
+            (regex [((<<) *'HTML').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^HTML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include text.html.basic)))
+    (zone
+        (inner-identifier text.xml.embedded.perl)
+        (start
+            (regex [((<<) *'XML').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^XML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include text.xml)))
+    (zone
+        (inner-identifier text.css.embedded.perl)
+        (start
+            (regex [((<<) *'CSS').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^CSS$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include source.css)))
+    (zone
+        (inner-identifier text.js.embedded.perl)
+        (start
+            (regex [((<<) *'JAVASCRIPT').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^JAVASCRIPT$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include source.js)))
+    (zone
+        (inner-identifier source.sql.embedded.perl)
+        (start
+            (regex [((<<) *'SQL').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^SQL$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include source.sql)))
+    (zone
+        (inner-identifier source.postscript.embedded.perl)
+        (start
+            (regex [((<<) *'POSTSCRIPT').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^POSTSCRIPT)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include source.postscript)))
+    (zone
+        (inner-identifier string.unquoted.heredoc.quote.perl)
+        (start
+            (regex [((<<) *'([^']*)').*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^\3$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.quote.perl)
+                (2 punctuation.definition.heredoc.perl))))
+    (zone
+        (inner-identifier string.unquoted.heredoc.backtick.perl)
+        (start
+            (regex [((<<) *`([^`]*)`).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.backtick.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^\3$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.backtick.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone
+        (inner-identifier text.html.embedded.perl)
+        (start
+            (regex [((<<) *HTML\b).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^HTML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include text.html.basic)))
+    (zone
+        (inner-identifier text.xml.embedded.perl)
+        (start
+            (regex [((<<) *XML\b).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^XML$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include text.xml)))
+    (zone
+        (inner-identifier source.sql.embedded.perl)
+        (start
+            (regex [((<<) *SQL\b).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^SQL$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.sql)))
+    (zone
+        (inner-identifier source.postscript.embedded.perl)
+        (start
+            (regex [((<<) *POSTSCRIPT\b).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^POSTSCRIPT)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include source.postscript)))
+    (zone
+        (inner-identifier string.unquoted.heredoc.perl)
+        (start
+            (regex [((<<) *((?![=\d\$ ])[^;,'"`\s)]*)).*\n?]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (end
+            (regex [(^\3$)]
+                (0 punctuation.definition.string.perl)
+                (1 string.unquoted.heredoc.perl)
+                (2 punctuation.definition.heredoc.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone string.quoted.other.qq.perl
+        (start
+            (regex `\bqq\s*([^\(\{\[\<\w\s])`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \1
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone string.interpolated.qx.perl
+        (start
+            (regex `\bqx\s*([^'\(\{\[\<\w\s])`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \1
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone string.interpolated.qx.single-quote.perl
+        (start
+            (regex \bqx\s*'
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex '
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)))
+    (zone string.quoted.double.perl
+        (start
+            (regex "
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex "
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone string.quoted.other.q.perl
+        (start
+            (regex `\bqw?\s*([^\(\{\[\<\w\s])`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \1
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)))
+    (zone string.quoted.single.perl
+        (start
+            (regex '
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex '
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (zone constant.character.escape.perl
+                (match
+                    (regex [\\['\\]])))))
+    (zone string.interpolated.perl
+        (start
+            (regex [`]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [`]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)))
+    (zone string.quoted.other.qq-paren.perl
+        (start
+            (regex [\bqq\s*\(]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\)]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_parens_interpolated)
+            (include @variable)))
+    (zone string.quoted.other.qq-brace.perl
+        (start
+            (regex [\bqq\s*\{]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\}]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_braces_interpolated)
+            (include @variable)))
+    (zone string.quoted.other.qq-bracket.perl
+        (start
+            (regex `\bqq\s*\[`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex `\]`
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_brackets_interpolated)
+            (include @variable)))
+    (zone string.quoted.other.qq-ltgt.perl
+        (start
+            (regex \bqq\s*\<
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \>
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_ltgt_interpolated)
+            (include @variable)))
+    (zone string.interpolated.qx-paren.perl
+        (start
+            (regex [\bqx\s*\(]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\)]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_parens_interpolated)
+            (include @variable)))
+    (zone string.interpolated.qx-brace.perl
+        (start
+            (regex [\bqx\s*\{]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\}]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_braces_interpolated)
+            (include @variable)))
+    (zone string.interpolated.qx-bracket.perl
+        (start
+            (regex `\bqx\s*\[`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex `\]`
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_brackets_interpolated)
+            (include @variable)))
+    (zone string.interpolated.qx-ltgt.perl
+        (start
+            (regex \bqx\s*\<
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \>
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_ltgt_interpolated)
+            (include @variable)))
+    (zone string.quoted.other.q-paren.perl
+        (start
+            (regex [\bqw?\s*\(]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\)]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_parens)))
+    (zone string.quoted.other.q-brace.perl
+        (start
+            (regex [\bqw?\s*\{]
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex [\}]
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_braces)))
+    (zone string.quoted.other.q-bracket.perl
+        (start
+            (regex `\bqw?\s*\[`
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex `\]`
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_brackets)))
+    (zone string.quoted.other.q-ltgt.perl
+        (start
+            (regex \bqw?\s*\<
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex \>
+                (0 punctuation.definition.string.end.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_ltgt)))
+    (zone string.unquoted.program-block.perl
+        (start
+            (regex ^__\w+__
+                (0 punctuation.definition.string.begin.perl)))
+        (end
+            (regex $
+                (0 punctuation.definition.string.end.perl))))
+    (zone meta.format.perl
+        (start
+            (regex [\b(format)\s+([A-Za-z]+)\s*=]
+                (1 support.function.perl)
+                (2 entity.name.function.format.perl)))
+        (end
+            (regex ^\.\s*$))
+        (subzones
+            (include @line_comment)
+            (include @variable)))
+    (zone support.function.perl
+        (match
+            (list ARGV DATA ENV SIG STDERR STDIN STDOUT atan2 bind binmode bless caller chdir chmod chomp chop chown chr chroot close closedir cmp connect cos crypt dbmclose dbmopen defined delete dump each endgrent endhostent endnetent endprotoent endpwent endservent eof eq eval exec exists exp fcntl fileno flock fork format formline ge getc getgrent getgrgid getgrnam gethostbyaddr gethostbyname gethostent getlogin getnetbyaddr getnetbyname getnetent getpeername getpgrp getppid getpriority getprotobyname getprotobynumber getprotoent getpwent getpwnam getpwuid getservbyname getservbyport getservent getsockname getsockopt glob gmtime grep gt hex import index int ioctl join keys kill lc lcfirst le length link listen local localtime log lstat lt m map mkdir msgctl msgget msgrcv msgsnd ne no oct open opendir ord pack pipe pop pos print printf push q qq quotemeta qw qx rand read readdir readlink recv ref rename reset reverse rewinddir rindex rmdir s scalar seek seekdir semctl semget semop send setgrent sethostent setnetent setpgrp setpriority setprotoent setpwent setservent setsockopt shift shmctl shmget shmread shmwrite shutdown sin sleep socket socketpair sort splice split sprintf sqrt srand stat study substr symlink syscall sysopen sysread system syswrite tell telldir tie tied time times tr truncate uc ucfirst umask undef unlink unpack unshift untie utime values vec waitpid wantarray warn write y q qw qq qx)
+            (boundary.both))))
+
+(collection nested_braces_interpolated
+    (zone
+        (start
+            (regex [\{]
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex [\}]
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include @nested_braces_interpolated))))
+
+(collection nested_ltgt
+    (zone
+        (start
+            (regex <
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex >
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @nested_ltgt))))
+
+(collection nested_braces
+    (zone
+        (start
+            (regex [\{]
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex [\}]
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_braces))))
+
+(collection nested_brackets
+    (zone
+        (start
+            (regex `\[`
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex `\]`
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_brackets))))
+
+(collection nested_brackets_interpolated
+    (zone
+        (start
+            (regex `\[`
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex `\]`
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @variable)
+            (include @nested_brackets_interpolated))))
+
+(collection line_comment
+    (zone meta.comment.full-line.perl
+        (match
+            (regex [^((#).*$\n?)]
+                (1 comment.line.number-sign.perl)
+                (2 punctuation.definition.comment.perl))))
+    (zone comment.line.number-sign.perl
+        (match
+            (regex [(#).*$\n?]
+                (1 punctuation.definition.comment.perl)))))
+
+(collection nested_parens_interpolated
+    (zone
+        (start
+            (regex [\(]
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex [\)]
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (zone keyword.control.anchor.perl
+                (match
+                    (regex `\$(?=[^\s\w\'\{\[\(\<])`)))
+            (include @escaped_char)
+            (include @variable)
+            (include @nested_parens_interpolated))))
+
+(collection nested_parens
+    (zone
+        (start
+            (regex [\(]
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex [\)]
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @escaped_char)
+            (include @nested_parens))))
+
+(collection escaped_char
+    (zone constant.character.escape.perl
+        (match
+            (regex \\.))))
+
+(collection variable
+    (zone variable.other.regexp.match.perl
+        (match
+            (regex [(\$)&(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.regexp.pre-match.perl
+        (match
+            (regex [(\$)`(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.regexp.post-match.perl
+        (match
+            (regex [(\$)'(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.regexp.last-paren-match.perl
+        (match
+            (regex [(\$)\+(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.readwrite.list-separator.perl
+        (match
+            (regex [(\$)"(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.predefined.program-name.perl
+        (match
+            (regex [(\$)0(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.predefined.perl
+        (match
+            (regex [(\$)[_ab\*\.\/\|,\\;#%=\-~^:?!\$<>\(\)\[\]@](?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.subpattern.perl
+        (match
+            (regex [(\$)[0-9]+(?![A-Za-z0-9_])]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.readwrite.global.perl
+        (match
+            (regex [([\$\@\%](#)?)([a-zA-Zx7f-xff\$]|::)([a-zA-Z0-9_x7f-xff\$]|::)*\b]
+                (1 punctuation.definition.variable.perl))))
+    (zone variable.other.readwrite.global.perl
+        (match
+            (regex [(\$\{)(?:[a-zA-Zx7f-xff\$]|::)(?:[a-zA-Z0-9_x7f-xff\$]|::)*(\})]
+                (1 punctuation.definition.variable.perl)
+                (2 punctuation.definition.variable.perl))))
+    (zone variable.other.readwrite.global.special.perl
+        (match
+            (regex [([\$\@\%](#)?)[0-9_]\b]
+                (1 punctuation.definition.variable.perl)))))
+
+(collection nested_ltgt_interpolated
+    (zone
+        (start
+            (regex <
+                (1 punctuation.section.scope.perl)))
+        (end
+            (regex >
+                (1 punctuation.section.scope.perl)))
+        (subzones
+            (include @variable)
+            (include @nested_ltgt_interpolated))))

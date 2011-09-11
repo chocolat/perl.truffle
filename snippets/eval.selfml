@@ -1,0 +1,14 @@
+(name Try/Except)
+
+(trigger
+    (tab eval))
+
+(only-in source.perl)
+
+(snippet [eval {
+	%{1="# do something risky..."}
+};
+if ($@) {
+	%{2="# handle failure..."}
+}
+])
