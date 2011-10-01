@@ -1,0 +1,38 @@
+(trigger
+    (key [[cmd]R]))
+
+(name [Run Perl Script])
+
+(only-in source.perl)
+
+(input document)
+
+(output nothing)
+
+(save nothing)
+
+(script [#!/bin/bash
+[[ -z "$TM_FILEPATH" ]] && TM_TMPFILE=$(mktemp -t perlInTerm)
+: "${TM_FILEPATH:=$TM_TMPFILE}"; cat >"$TM_FILEPATH"
+
+TPL=${TM_PERLN:-perl}
+
+esc () {
+STR="$1" ruby <<"RUBY"
+   str = ENV['STR']
+   str = str.gsub(/'/, "'\\\\''")
+   str = str.gsub(/[\\"]/, '\\\\\\0')
+   print "'#{str}'"
+RUBY
+}
+
+osascript <<- APPLESCRIPT
+	tell app "Terminal"
+	    launch
+	    activate
+	    do script "clear; cd $(esc "${TM_DIRECTORY}"); $(esc "${TPL}") $(esc "${TM_FILEPATH}"); rm -f $(esc "${TM_TMPFILE}")"
+	    set position of first window to { 100, 100 }
+	end tell
+APPLESCRIPT])
+
+(handler shell)
