@@ -11,4 +11,4 @@
 
 (save nothing)
 
-(script [pod2html 2>/dev/null])
+(script [pod2html 2>/dev/null && rm -f pod2htmd.tmp pod2htmi.tmp])

@@ -308,10 +308,14 @@
         (match
             (regex [(?<={)\s*\w+\s*(?=})])))
     (zone string.regexp.find.perl
-        (match
-            (regex [(?<!\\)((~\s*)?\/)(\S.*?)(?<!\\)(\\{2})*(\/)]
-                (5 punctuation.definition.string.perl)
-                (1 punctuation.definition.string.perl))))
+        (start
+            (regex [(?<!\\)((~\s*)?\/)(?=\S)(?=([^\\]|\\.)*\/)]
+                (1 punctuation.definition.string.perl)))
+        (end
+            (regex [(\/)]
+                (1 punctuation.definition.string.perl)))
+        (subzones
+            (include @escaped_char)))
     (zone string.regexp.find.extended.perl
         (start
             (regex [(?<!\\)(\~\s*\/)]
